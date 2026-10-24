@@ -1,5 +1,6 @@
 node_modules/
 test-results/
+junit.xml
 coverage/
 .env
 npm-debug.log*
