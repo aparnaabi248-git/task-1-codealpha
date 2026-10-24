@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="0.952">
+  <testsuite name="Task 1 Web Application Automated Tests" errors="0" failures="0" skipped="0" timestamp="2026-10-24T04:11:16" time="0.877" tests="4">
+    <testcase classname="Task 1 Web Application Automated Tests GET /health should return HTTP 200 and UP status" name="Task 1 Web Application Automated Tests GET /health should return HTTP 200 and UP status" time="0.063">
+    </testcase>
+    <testcase classname="Task 1 Web Application Automated Tests GET /api/info should return DevOps project metadata" name="Task 1 Web Application Automated Tests GET /api/info should return DevOps project metadata" time="0.006">
+    </testcase>
+    <testcase classname="Task 1 Web Application Automated Tests GET / should serve the home dashboard page with HTTP 200" name="Task 1 Web Application Automated Tests GET / should serve the home dashboard page with HTTP 200" time="0.007">
+    </testcase>
+    <testcase classname="Task 1 Web Application Automated Tests GET /unknown-route should return HTTP 404" name="Task 1 Web Application Automated Tests GET /unknown-route should return HTTP 404" time="0.006">
+    </testcase>
+  </testsuite>
+</testsuites>

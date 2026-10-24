@@ -1,0 +1,118 @@
+# ==============================================================================
+# CodeAlpha DevOps Internship - Task 1
+# Project: Automated CI/CD Pipeline for Web Application Using Azure DevOps
+# Stages:
+#   1. Continuous Integration (CI): Run automated Jest tests & generate test report
+#   2. Container Build & Push: Build Docker image & push to Azure Container Registry (ACR)
+#   3. Continuous Deployment (CD): Deploy container image to Azure App Service (Linux)
+# ==============================================================================
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+# Virtual machine image for pipeline agent
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Global Variables (Replace placeholder names with your specific Azure resource names)
+variables:
+  # 1. Service Connection created in Azure DevOps -> Project Settings -> Service connections -> Docker Registry
+  dockerRegistryServiceConnection: 'acrServiceConnection'
+  
+  # 2. Service Connection created in Azure DevOps -> Project Settings -> Service connections -> Azure Resource Manager
+  azureSubscriptionServiceConnection: 'azureServiceConnection'
+
+  # 3. Your Azure Container Registry login server (e.g., codealpharegistry.azurecr.io)
+  containerRegistry: 'codealpharegistry.azurecr.io'
+
+  # 4. Container repository / image name
+  imageRepository: 'codealpha-web-app'
+
+  # 5. Name of your Azure App Service (Web App for Containers)
+  webAppName: 'codealpha-task1-webapp'
+
+  # Dockerfile location and image tags
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+stages:
+  # ==========================================================================
+  # STAGE 1: CONTINUOUS INTEGRATION (TEST & CODE VALIDATION)
+  # ==========================================================================
+  - stage: Test
+    displayName: 'CI Stage: Automated Quality Gates'
+    jobs:
+      - job: UnitTests
+        displayName: 'Run Unit & Integration Tests'
+        steps:
+          # Step 1: Install Node.js runtime
+          - task: NodeTool@0
+            displayName: 'Install Node.js 20.x'
+            inputs:
+              versionSpec: '20.x'
+
+          # Step 2: Install project dependencies
+          - script: |
+              echo "Installing NPM dependencies..."
+              npm ci
+            displayName: 'Install NPM Dependencies'
+
+          # Step 3: Run automated test suite
+          - script: |
+              echo "Executing Jest automated tests..."
+              npm test
+            displayName: 'Run Automated Tests'
+
+          # Step 4: Publish test results to Azure DevOps Test dashboard
+          - task: PublishTestResults@2
+            displayName: 'Publish Unit Test Results'
+            condition: always()
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/junit.xml'
+              searchFolder: '$(System.DefaultWorkingDirectory)/test-results'
+              mergeTestResults: true
+              testRunTitle: 'CodeAlpha Web App Unit Tests'
+
+  # ==========================================================================
+  # STAGE 2: CONTAINER IMAGE BUILD & PUSH TO ACR
+  # ==========================================================================
+  - stage: BuildAndPush
+    displayName: 'CI Stage: Build & Push Docker Image'
+    dependsOn: Test
+    condition: succeeded()
+    jobs:
+      - job: DockerBuild
+        displayName: 'Build and Push to Azure Container Registry'
+        steps:
+          - task: Docker@2
+            displayName: 'Build and Push Docker Image to ACR'
+            inputs:
+              command: buildAndPush
+              repository: $(imageRepository)
+              dockerfile: $(dockerfilePath)
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(tag)
+                latest
+
+  # ==========================================================================
+  # STAGE 3: CONTINUOUS DEPLOYMENT (CD TO AZURE APP SERVICE)
+  # ==========================================================================
+  - stage: Deploy
+    displayName: 'CD Stage: Deploy to Azure App Service'
+    dependsOn: BuildAndPush
+    condition: succeeded()
+    jobs:
+      - job: DeployToAppService
+        displayName: 'Deploy Container to Azure App Service'
+        steps:
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy Web App Container'
+            inputs:
+              azureSubscription: $(azureSubscriptionServiceConnection)
+              appName: $(webAppName)
+              imageName: '$(containerRegistry)/$(imageRepository):$(tag)'

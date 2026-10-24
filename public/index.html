@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeAlpha DevOps - Task 1: Azure CI/CD Pipeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-glow glow-1"></div>
+  <div class="background-glow glow-2"></div>
+
+  <header class="navbar">
+    <div class="brand">
+      <div class="azure-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <span class="badge">CodeAlpha DevOps Internship</span>
+        <h1 class="logo-text">Task 1: Azure CI/CD Pipeline</h1>
+      </div>
+    </div>
+    <div class="header-status">
+      <span class="pulse-dot"></span>
+      <span id="headerStatusText">Live Deployment Active</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <div class="intern-pill">🚀 Automated Cloud Delivery</div>
+        <h2 class="hero-title">Continuous Integration & Continuous Deployment via Azure DevOps</h2>
+        <p class="hero-desc">
+          This containerized Node.js application is automatically tested, containerized with Docker,
+          stored in <strong>Azure Container Registry (ACR)</strong>, and deployed seamlessly to
+          <strong>Azure App Service</strong> using automated triggers on code commits.
+        </p>
+        <div class="hero-actions">
+          <a href="#pipeline-steps" class="btn btn-primary">View CI/CD Architecture</a>
+          <a href="/health" target="_blank" class="btn btn-secondary">Raw Health Endpoint</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-time Live Telemetry -->
+    <section class="telemetry-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Application Status</span>
+          <span class="metric-badge success" id="statusBadge">Checking...</span>
+        </div>
+        <div class="metric-value" id="healthStatus">UP</div>
+        <div class="metric-sub" id="healthUptime">Uptime: calculating...</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Runtime Platform</span>
+          <span class="metric-badge azure">Azure Cloud</span>
+        </div>
+        <div class="metric-value">App Service</div>
+        <div class="metric-sub" id="platformSub">Linux Web App for Containers</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Image Registry</span>
+          <span class="metric-badge blue">Docker / OCI</span>
+        </div>
+        <div class="metric-value">Azure ACR</div>
+        <div class="metric-sub" id="registrySub">Secure Private Registry</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-label">Pipeline Engine</span>
+          <span class="metric-badge purple">YAML Pipeline</span>
+        </div>
+        <div class="metric-value">Azure Pipelines</div>
+        <div class="metric-sub">Trigger: main branch commit</div>
+      </div>
+    </section>
+
+    <!-- Pipeline Architecture Visualizer -->
+    <section class="section" id="pipeline-steps">
+      <div class="section-header">
+        <h3 class="section-title">Automated DevOps Pipeline Architecture</h3>
+        <p class="section-subtitle">End-to-end automation workflow configured in <code>azure-pipelines.yml</code></p>
+      </div>
+
+      <div class="pipeline-flow">
+        <!-- Stage 1 -->
+        <div class="pipeline-step">
+          <div class="step-num">01</div>
+          <div class="step-icon">💻</div>
+          <h4>Source Code</h4>
+          <p>Developer commits & pushes changes to GitHub or Azure Repos repository.</p>
+          <span class="step-tag">Git Push</span>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <!-- Stage 2 -->
+        <div class="pipeline-step">
+          <div class="step-num">02</div>
+          <div class="step-icon">🧪</div>
+          <h4>Build & Test</h4>
+          <p>Azure Agent checks out code, installs dependencies, and runs Jest automated unit tests.</p>
+          <span class="step-tag">CI Quality Gate</span>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <!-- Stage 3 -->
+        <div class="pipeline-step">
+          <div class="step-num">03</div>
+          <div class="step-icon">🐳</div>
+          <h4>Docker Container</h4>
+          <p>Dockerfile packages the tested app into a lightweight, isolated Linux container image.</p>
+          <span class="step-tag">Multi-Stage Build</span>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <!-- Stage 4 -->
+        <div class="pipeline-step">
+          <div class="step-num">04</div>
+          <div class="step-icon">📦</div>
+          <h4>Azure Registry</h4>
+          <p>Built image tagged with Build ID and pushed securely to Azure Container Registry (ACR).</p>
+          <span class="step-tag">Image Artifact</span>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <!-- Stage 5 -->
+        <div class="pipeline-step">
+          <div class="step-num">05</div>
+          <div class="step-icon">🌐</div>
+          <h4>Azure App Service</h4>
+          <p>Continuous deployment webhook triggers zero-downtime rolling release to production.</p>
+          <span class="step-tag">CD Production</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Server Details & Live Inspection -->
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Live Server Diagnostics</h3>
+        <p class="section-subtitle">Real-time parameters fetched directly from the running container</p>
+      </div>
+
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">GET /api/info — JSON Response</span>
+        </div>
+        <pre class="terminal-body"><code id="jsonDisplay">Loading telemetry...</code></pre>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p><strong>CodeAlpha DevOps Internship</strong> • Task 1: Automated CI/CD Pipeline Using Azure</p>
+      <p class="footer-sub">Built with Node.js, Express, Docker, Azure Container Registry, Azure App Service & Azure Pipelines</p>
+    </footer>
+  </main>
+
+  <script>
+    async function fetchTelemetry() {
+      try {
+        const [healthRes, infoRes] = await Promise.all([
+          fetch('/health'),
+          fetch('/api/info')
+        ]);
+        
+        if (healthRes.ok && infoRes.ok) {
+          const health = await healthRes.json();
+          const info = await infoRes.json();
+          
+          document.getElementById('statusBadge').innerText = 'Online';
+          document.getElementById('statusBadge').className = 'metric-badge success';
+          document.getElementById('healthStatus').innerText = health.status;
+          document.getElementById('healthUptime').innerText = 'Uptime: ' + health.uptime + 's';
+          document.getElementById('jsonDisplay').innerText = JSON.stringify(info, null, 2);
+        }
+      } catch (err) {
+        document.getElementById('statusBadge').innerText = 'Offline';
+        document.getElementById('statusBadge').className = 'metric-badge danger';
+        document.getElementById('jsonDisplay').innerText = '// Could not reach API endpoints: ' + err.message;
+      }
+    }
+
+    fetchTelemetry();
+    setInterval(fetchTelemetry, 5000);
+  </script>
+</body>
+</html>
